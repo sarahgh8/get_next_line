@@ -2,7 +2,15 @@
 
 int main()
 {
-    int fd = open("test.txt", O_RDONLY);
-    printf("fd: %d\n", fd);
+    int fd, size;
+    char *str;
 
+    fd = open("test.txt", O_RDONLY);
+
+    str = get_next_line(fd);
+    printf("%s\n", str);
+
+    //size = read(fd, str, 10);
+
+    return 0;
 }

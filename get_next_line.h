@@ -4,6 +4,14 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
+
+typedef struct s_variables
+{
+} t_variables;
+
+size_t  ft_strlen(char *str);
+char *get_next_line(int fd);
 
 
 #endif
