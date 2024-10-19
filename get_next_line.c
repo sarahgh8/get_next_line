@@ -2,12 +2,38 @@
 
 char    *get_next_line(int fd)
 {
-    char    *ptr;
-    ssize_t size;
+    char    *res;
+    char    *buff;
+    t_variables     var;
 
-    ptr = (char *)malloc(100);
-    size = read(fd, ptr, 12);
-
-    ptr[size] = '\0';
-    return(ptr);
+    var.i = 0;
+    var.j = 0;
+    var.bytes = 1;
+    res = malloc(sizeof(char) * BUFFER_SIZE);
+    if(res == NULL)
+    {
+        free(res);
+        return (NULL);
+    }
+    buff = malloc(sizeof(char) * BUFFER_SIZE);
+    if(buff == NULL)
+    {
+        free(res);
+        free(buff);
+        return (NULL);
+    }
+    while (var.bytes > 0)
+    {
+        var.bytes = read(fd, buff, BUFFER_SIZE);
+        while (ft_strchr(buff, '\n'))
+        {
+            res[var.j] = buff[var.i];
+            var.i++;
+            var.j++;
+        }
+        res[var.j] = '\0';
+        free(buff);
+        return (res);
+    }
+    return (NULL);
 }

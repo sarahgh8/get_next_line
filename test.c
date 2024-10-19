@@ -1,16 +1,16 @@
 #include "get_next_line.h"
 
-int main()
+int main (int argc, char **argv)
 {
-    int fd, size;
-    char *str;
+    int fd;
 
-    fd = open("test.txt", O_RDONLY);
+    fd = open("test.txt", O_RDWR);
+    write(fd, argv[1], ft_strlen(argv[1]));
+    close(fd);
 
-    str = get_next_line(fd);
-    printf("%s\n", str);
+    fd = open("test.txt", O_RDWR);
+    printf("%s\n", get_next_line(fd));
+    close(fd);
 
-    //size = read(fd, str, 10);
-
-    return 0;
+    return (0);
 }
