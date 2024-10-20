@@ -18,6 +18,8 @@ char	*ft_strjoin(char *s1, char const *s2)
 	size_t	i;
 
 	join = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	// printf
+	// printf("allocated in join: %ld\n", ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (join == NULL)
 	{
 		free(s1);
@@ -99,26 +101,54 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 
 char *until_newline(char *str)
 {
-    int i = 0, j = 0;
-    char *res;
-    while(str[i - 1] != '\n' && str[i])
-        i++;
-    res = malloc(i + 1);
-    if (!res)
+	int i = 0, j = 0;
+	char *res;
+	while (str[i] != '\n' && str[i])
 	{
-		// free(res);
-        return NULL;
+		i++;
 
 	}
+	if (str[i] == '\n')
+		i++;
+
+	res = malloc(i + 1);
+	if (!res)
+		return NULL;
 
 
-    while (j < i)
-    {
-        res[j] = str[j];
-        j++;
-    }
+	while (j < i)
+	{
+		res[j] = str[j];
+		j++;
+	}
 
-    free(str);
-    res[j] = '\0';
-    return res;
+	free(str);
+	res[j] = '\0';
+	return res;
 }
+
+// static char	*ft_strdup_till_newline(const char *s1)
+// {
+// 	size_t	len;
+// 	char	*new_string;
+// 	int		i;
+
+// 	len = 0;
+// 	while (s1[len] && s1[len] != '\n')
+// 		len++;
+// 	if (s1[len] == '\n')
+// 		len++;
+// 	new_string = malloc(sizeof(char) * (len + 1));
+// 	if (!new_string)
+// 		return (NULL);
+// 	i = 0;
+// 	while (s1[i] && s1[i] != '\n')
+// 	{
+// 		new_string[i] = s1[i];
+// 		i++;
+// 	}
+// 	if (s1[i] == '\n')
+// 		new_string[i++] = '\n';
+// 	new_string[i] = '\0';
+// 	return (new_string);
+// }
