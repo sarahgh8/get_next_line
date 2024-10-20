@@ -2,38 +2,51 @@
 
 char    *get_next_line(int fd)
 {
-    char    *res;
-    char    *buff;
-    t_variables     var;
+    static char buffer[BUFFER_SIZE + 1];
+    static ssize_t bytes;
+    char *line;
 
-    var.i = 0;
-    var.j = 0;
-    var.bytes = 1;
-    res = malloc(sizeof(char) * BUFFER_SIZE);
-    if(res == NULL)
+    if (buffer[0] != '\0')
     {
-        free(res);
-        return (NULL);
+        if (bytes < BUFFER_SIZE)
+            return NULL;
+        char *temp = ft_strchr(buffer, '\n') + 1;
+        ft_memcpy(buffer, temp, ft_strlen(temp));
+        buffer[ft_strlen(temp)] = '\0';
     }
-    buff = malloc(sizeof(char) * BUFFER_SIZE);
-    if(buff == NULL)
+    else
+        bytes = read(fd, buffer, BUFFER_SIZE);
+
+    line = ft_strdup("");
+    if (!line)
+        return NULL;
+    while(bytes > 0)
     {
-        free(res);
-        free(buff);
-        return (NULL);
-    }
-    while (var.bytes > 0)
-    {
-        var.bytes = read(fd, buff, BUFFER_SIZE);
-        while (ft_strchr(buff, '\n'))
+        
+        
+        line = ft_strjoin(line, buffer);
+        if (!line)
         {
-            res[var.j] = buff[var.i];
-            var.i++;
-            var.j++;
+            free(line);
+            return NULL;
         }
-        res[var.j] = '\0';
-        free(buff);
-        return (res);
+        
+        
+        if(ft_strchr(line, '\n'))
+            break;
+        bytes = read(fd, buffer, BUFFER_SIZE);
+
+        if (bytes < BUFFER_SIZE)
+        {
+            buffer[bytes] = '\0';
+            line = ft_strjoin(line, buffer);
+            if (!line)
+            {
+                free(line);
+                return NULL;
+            }
+            break;
+        }
     }
-    return (NULL);
+    return until_newline(line);
 }
