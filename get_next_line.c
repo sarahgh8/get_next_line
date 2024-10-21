@@ -6,7 +6,7 @@
 /*   By: sghunmin <sghunmin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 09:02:08 by sghunmin          #+#    #+#             */
-/*   Updated: 2024/10/21 09:06:43 by sghunmin         ###   ########.fr       */
+/*   Updated: 2024/10/21 10:19:13 by sghunmin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,22 @@ static void	*ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
+void *check_malloc(char *str)
+{
+	if (!str)
+	{
+		free(str);
+		return (NULL);
+	}
+	return (str);
+}
+
 char	*get_next_line(int fd)
 {
 	static char		buffer[BUFFER_SIZE + 1];
 	static ssize_t	bytes;
-	char			*line;
-	char			*temp;
+	char *line;
+	char *temp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -87,11 +97,7 @@ char	*get_next_line(int fd)
 	while (bytes > 0)
 	{
 		line = ft_strjoin(line, buffer);
-		if (!line)
-		{
-			free(line);
-			return (NULL);
-		}
+		check_malloc(line);
 		if (ft_strchr(line, '\n'))
 			break ;
 		bytes = read(fd, buffer, BUFFER_SIZE);
@@ -101,11 +107,7 @@ char	*get_next_line(int fd)
 		{
 			buffer[bytes] = '\0';
 			line = ft_strjoin(line, buffer);
-			if (!line)
-			{
-				free(line);
-				return (NULL);
-			}
+			check_malloc(line);
 			break ;
 		}
 	}
